@@ -1,0 +1,10 @@
+# Data and heavy files
+archive/
+yolo_data/
+runs/
+*.pt
+
+# Python system files
+__pycache__/
+.venv/
+.ipynb_checkpoints/

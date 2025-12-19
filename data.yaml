@@ -1,0 +1,8 @@
+# data.yaml
+path: D:/DATA SCIENCE/Tensorflow_projects/Face Mask Detection/yolo_data 
+train: images/train
+val: images/val
+
+# Classes
+nc: 3
+names: ['with_mask', 'without_mask', 'mask_weared_incorrect']
