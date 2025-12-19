@@ -3,7 +3,7 @@ archive/
 yolo_data/
 runs/
 *.pt
-
+!models/best.pt
 # Python system files
 __pycache__/
 .venv/
