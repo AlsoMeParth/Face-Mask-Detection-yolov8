@@ -107,12 +107,8 @@ def process_annotations():
 
             # --- Copy Image ---
             img_filename = xml_filename.replace('.xml', '.png')
-            
-            # Handle possible .jpg files (try/except for robustness)
+        
             img_src_path = os.path.join(IMAGE_DIR, img_filename)
-            if not os.path.exists(img_src_path):
-                img_filename = xml_filename.replace('.xml', '.jpg')
-                img_src_path = os.path.join(IMAGE_DIR, img_filename)
             
             img_dest_path = os.path.join(IMAGES_DIR, split_type, img_filename)
             shutil.copy(img_src_path, img_dest_path)
@@ -128,6 +124,6 @@ def process_annotations():
 
 if __name__ == '__main__':
     # Ensure pandas and scikit-learn are installed in this environment!
-    import pandas # just to make sure
+    import pandas
     from sklearn.model_selection import train_test_split
     process_annotations()
