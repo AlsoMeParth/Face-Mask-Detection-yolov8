@@ -105,9 +105,51 @@ model.train(
     data="data.yaml",
     epochs=50,
     imgsz=640
+    # freeze=10 # Optional: Freeze first 10 layers
 )
 ```
+### 🧠 Explanation of Training Parameters
 
+* **`YOLO("yolov8n.pt")`**
+  Loads the YOLOv8 Nano model pre-trained on the COCO dataset. The Nano version is lightweight and suitable for systems with limited computational resources while still maintaining good detection accuracy.
+
+* **`data="data.yaml"`**
+  Specifies the dataset configuration file. This file defines:
+
+  * Paths to training and validation images
+  * Number of object classes
+  * Class names (e.g., With Mask, Without Mask, Mask Worn Incorrectly)
+
+* **`epochs=50`**
+  Determines how many complete passes the model makes over the training dataset. More epochs allow better learning but may increase the risk of overfitting.
+
+* **`imgsz=640`**
+  Sets the input image resolution for training. A resolution of 640×640 is a balanced choice between detection accuracy and training speed.
+
+* **`freeze=10` (optional)**
+  Freezes the first 10 layers of the neural network so that their weights are not updated during training.
+
+---
+
+### 📝 Technical Note: Layer Freezing & Fine-Tuning
+
+By default, **YOLOv8 unfreezes all layers when training begins**. This enables **full fine-tuning**, meaning:
+
+* All layers of the network are trainable
+* The model fully adapts to the custom dataset
+* Feature representations are optimized for face mask detection
+
+This approach is particularly effective when the dataset is reasonably sized and sufficiently diverse.
+
+#### 🔹 Layer Freezing
+
+Layer freezing prevents early layers from updating their weights during training. These layers usually capture basic features such as edges, corners, and textures.
+
+Layer freezing is recommended when:
+
+* The dataset is small
+* Faster training is required
+* Overfitting needs to be minimized
 Training outputs (weights, metrics, plots) are saved in:
 
 ```

@@ -4,34 +4,28 @@ import xml.etree.ElementTree as ET
 from sklearn.model_selection import train_test_split
 import shutil
 
-# --- CONFIGURATION ---
-
-# 1. Input Directories (Where raw data is)
+# 1. Input Directories 
 ANNOTATION_DIR = 'archive/annotations/'
 IMAGE_DIR = 'archive/images/'
 
-# 2. Output Directories (The final structure YOLO needs)
+# 2. Output Directories 
 YOLO_ROOT = 'yolo_data/'
 LABELS_DIR = os.path.join(YOLO_ROOT, 'labels')
 IMAGES_DIR = os.path.join(YOLO_ROOT, 'images')
 
-# Define the split ratio (e.g., 80% train, 20% val)
+# Split ratio (80-20)
 VAL_RATIO = 0.20 
 
-# 3. Class Mapping (MUST match your label_map.pbtxt/YOLO needs)
-# YOLO requires IDs starting from 0.
+# 3. Class Mapping 
 CLASS_MAPPING = {
     'with_mask': 0,
     'without_mask': 1,
     'mask_weared_incorrect': 2
 }
-
+# 4. Bounding box to normalized YOLO format.
 def convert_box(size, box):
-    """Converts PASCAL VOC bounding box to normalized YOLO format."""
     dw = 1.0 / size[0]
     dh = 1.0 / size[1]
-    
-    # Calculate center coordinates, width, and height
     center_x = (box[0] + box[2]) / 2.0  # (xmin + xmax) / 2
     center_y = (box[1] + box[3]) / 2.0  # (ymin + ymax) / 2
     width = box[2] - box[0]
@@ -42,11 +36,9 @@ def convert_box(size, box):
     center_y = center_y * dh
     width = width * dw
     height = height * dh
-
-    # Return as string formatted to 6 decimal places
     return (center_x, center_y, width, height)
 
-
+# 5. 
 def process_annotations():
     """Reads XMLs, converts boxes, and saves to YOLO TXT format."""
     
@@ -58,7 +50,7 @@ def process_annotations():
     # 1. Get list of all XML filenames
     all_xml_files = [f for f in os.listdir(ANNOTATION_DIR) if f.endswith('.xml')]
     
-    # 2. Split the list of filenames (images/annotations must be split together)
+    # 2. Split it 
     train_xml_files, val_xml_files = train_test_split(
         all_xml_files, test_size=VAL_RATIO, random_state=42
     )

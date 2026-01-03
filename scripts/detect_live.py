@@ -1,14 +1,13 @@
 import cv2
 from ultralytics import YOLO
 
-# 1. Load your custom trained model
-# Make sure the path points to your 'best.pt' file
+# 1. Load trained model
 model = YOLO('models/best.pt')
 
-# 2. Open the webcam (0 is usually the default laptop camera)
+# 2. Open the webcam 
 cap = cv2.VideoCapture(0)
 
-# Check if the webcam opened correctly
+# Checking if the webcam opened correctly
 if not cap.isOpened():
     print("Error: Could not open webcam.")
     exit()
@@ -16,26 +15,22 @@ if not cap.isOpened():
 print("Press 'q' to quit the application")
 
 while True:
-    # Capture frame-by-frame
     ret, frame = cap.read()
     if not ret:
         break
 
-    # 3. Run YOLOv8 inference on the frame
-    # imgsz=640 matches your training size for best accuracy
-    # conf=0.5 ignores weak detections (less than 50% certainty)
+    # 3. Using model on each frame
+    # imgsz=640 matches training size
     results = model(frame, imgsz=640, conf=0.8)
 
-    # 4. Visualize the results on the frame
+    # 4. Visualizing results on the frame
+    # .plot() function comes in ultralytics library and replaces open CV code for drawing rectangle on the frame with respective coordinates.
     annotated_frame = results[0].plot()
-
-    # Display the resulting frame
+                                
+    # 5. Result
     cv2.imshow('Face Mask Detector - Live', annotated_frame)
 
-    # 5. Break the loop if 'q' is pressed
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-
-# Release the capture and close windows
 cap.release()
 cv2.destroyAllWindows()
